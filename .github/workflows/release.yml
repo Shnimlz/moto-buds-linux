@@ -49,6 +49,9 @@ jobs:
             qml6-module-qtquick-layouts \
             qml6-module-qtquick-templates \
             libgl1-mesa-dev \
+            libxkbcommon-dev \
+            libx11-dev \
+            libvulkan-dev \
             libbluetooth-dev \
             file \
             curl \

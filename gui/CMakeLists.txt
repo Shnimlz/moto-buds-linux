@@ -7,7 +7,9 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
 find_package(Qt6 REQUIRED COMPONENTS Core Gui Qml Quick QuickControls2)
-qt_policy(SET QTP0001 NEW)
+if(COMMAND qt_policy)
+    qt_policy(SET QTP0001 NEW)
+endif()
 
 qt_add_executable(moto-buds-gui
     src/main.cpp

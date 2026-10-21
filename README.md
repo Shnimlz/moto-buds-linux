@@ -80,12 +80,7 @@ Descarga el paquete autonomo desde la seccion de [Releases de GitHub](https://gi
 
 ### Opcion B: Arch Linux / AUR
 
-Se incluyen plantillas de empaquetado bajo `packaging/arch/`:
-
-- **`moto-buds-bin`**: Binarios oficiales precompilados de 64 bits.
-- **`moto-buds-appimage`**: Envoltorio AppImage integrado al sistema.
-- **`moto-buds-git`**: Compilacion continua desde el codigo fuente.
-
+Disponible en el AUR (Arch User Repository):
 ```bash
 # Instalacion mediante un asistente de AUR (ej. yay o paru):
 yay -S moto-buds-bin
@@ -98,7 +93,7 @@ yay -S moto-buds-bin
 - Pila Bluetooth BlueZ activa (`bluetoothd`).
 - Compilador de C++ con soporte C++20 (GCC 11+ o Clang 13+).
 - CMake 3.16 o superior y generador Ninja.
-- Qt 6 (modulos: `qt6-base`, `qt6-declarative`, `qt6-quickcontrols2`).
+- Qt 6 (modulos: `qt6-base`, `qt6-declarative`).
 - Cadena de herramientas de Rust (Cargo) para compilar el motor CLI.
 - Fuente Google Material Symbols (incluida en el repositorio bajo `assets/`).
 
