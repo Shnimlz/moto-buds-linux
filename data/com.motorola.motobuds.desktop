@@ -1,0 +1,12 @@
+[Desktop Entry]
+Name=Moto Buds
+Comment=Control and monitor Motorola Moto Buds
+GenericName=Headphone Companion
+Exec=moto-buds-gui
+Icon=moto-buds
+Terminal=false
+Type=Application
+Categories=AudioVideo;Audio;Settings;HardwareSettings;Qt;
+Keywords=motorola;moto;buds;bluetooth;earbuds;headphones;anc;battery;
+StartupWMClass=moto-buds-gui
+StartupNotify=true

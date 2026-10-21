@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>com.motorola.motobuds</id>
+  <metadata_license>MIT</metadata_license>
+  <project_license>MIT</project_license>
+  <name>Moto Buds</name>
+  <summary>Control and companion utility for Motorola Moto Buds on Linux</summary>
+  <description>
+    <p>
+      Moto Buds is a desktop application and command-line companion for Motorola
+      Moto Buds earbuds on Linux. It provides direct control over Active Noise
+      Cancellation (ANC), battery levels, low-latency Game Mode, spatial audio,
+      and hardware preferences over Bluetooth RFCOMM.
+    </p>
+  </description>
+  <launchable type="desktop-id">com.motorola.motobuds.desktop</launchable>
+  <provides>
+    <binary>moto-buds-gui</binary>
+    <binary>moto-buds</binary>
+  </provides>
+  <categories>
+    <category>AudioVideo</category>
+    <category>Settings</category>
+    <category>HardwareSettings</category>
+  </categories>
+</component>
