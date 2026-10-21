@@ -1,0 +1,45 @@
+# Maintainer: Shni <niamelyrz@gmail.com>
+
+pkgname=moto-buds-appimage
+pkgver=0.1.0
+pkgrel=1
+pkgdesc="Motorola Moto Buds companion desktop application (AppImage standalone bundle)"
+arch=('x86_64')
+url="https://github.com/Shnimlz/moto-buds-linux"
+license=('MIT')
+depends=(
+    'bluez'
+    'hicolor-icon-theme'
+)
+optdepends=(
+    'fuse2: Required for running older AppImages'
+    'fuse3: Modern FUSE support'
+)
+provides=('moto-buds' 'moto-buds-gui')
+conflicts=('moto-buds' 'moto-buds-bin' 'moto-buds-git')
+options=(!strip)
+source=(
+    "$url/releases/download/v$pkgver/Moto_Buds-x86_64.AppImage"
+    "com.motorola.motobuds.desktop::$url/raw/main/data/com.motorola.motobuds.desktop"
+    "icon.png::$url/raw/main/assets/icon.png"
+    "LICENSE::$url/raw/main/LICENSE"
+)
+sha256sums=(
+    'SKIP'
+    'SKIP'
+    'SKIP'
+    'SKIP'
+)
+
+package() {
+    install -Dm755 "$srcdir/Moto_Buds-x86_64.AppImage" "$pkgdir/opt/moto-buds/moto-buds.AppImage"
+
+    mkdir -p "$pkgdir/usr/bin"
+    ln -s "/opt/moto-buds/moto-buds.AppImage" "$pkgdir/usr/bin/moto-buds-gui"
+    ln -s "/opt/moto-buds/moto-buds.AppImage" "$pkgdir/usr/bin/moto-buds"
+
+    install -Dm644 "$srcdir/com.motorola.motobuds.desktop" "$pkgdir/usr/share/applications/com.motorola.motobuds.desktop"
+    install -Dm644 "$srcdir/icon.png" "$pkgdir/usr/share/icons/hicolor/512x512/apps/moto-buds.png"
+    install -Dm644 "$srcdir/icon.png" "$pkgdir/usr/share/icons/hicolor/192x192/apps/moto-buds.png"
+    install -Dm644 "$srcdir/LICENSE" "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+}

@@ -1,0 +1,21 @@
+pkgbase = moto-buds-bin
+	pkgdesc = Motorola Moto Buds companion CLI and Qt6/QML desktop application (precompiled binaries)
+	pkgver = 0.1.0
+	pkgrel = 1
+	url = https://github.com/Shnimlz/moto-buds-linux
+	arch = x86_64
+	license = MIT
+	depends = qt6-base
+	depends = qt6-declarative
+	depends = qt6-quickcontrols2
+	depends = bluez
+	depends = hicolor-icon-theme
+	provides = moto-buds
+	provides = moto-buds-gui
+	conflicts = moto-buds
+	conflicts = moto-buds-git
+	conflicts = moto-buds-appimage
+	source = https://github.com/Shnimlz/moto-buds-linux/releases/download/v0.1.0/moto-buds-linux-x86_64.tar.gz
+	sha256sums = SKIP
+
+pkgname = moto-buds-bin

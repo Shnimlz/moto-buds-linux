@@ -66,8 +66,34 @@ La comunicacion se realiza mediante sockets directos de capa de enlace POSIX Blu
 | 778 / 779 | Audio Espacial | `[Modo, Tracking]` | `[Modo, Tracking]` |
 | 782 / 783 | Modo Juego | `[0x01]` o `[0x00]` | `[0x01]` o `[0x00]` |
 
-## Requisitos de Compilacion
+## Instalacion
 
+### Opcion A: AppImage (Sin necesidad de comandos ni compilacion)
+
+Descarga el paquete autonomo desde la seccion de [Releases de GitHub](https://github.com/Shnimlz/moto-buds-linux/releases):
+1. Descarga el archivo `Moto_Buds-x86_64.AppImage`.
+2. Otorga permisos de ejecucion y abre la aplicacion:
+   ```bash
+   chmod +x Moto_Buds-x86_64.AppImage
+   ./Moto_Buds-x86_64.AppImage
+   ```
+
+### Opcion B: Arch Linux / AUR
+
+Se incluyen plantillas de empaquetado bajo `packaging/arch/`:
+
+- **`moto-buds-bin`**: Binarios oficiales precompilados de 64 bits.
+- **`moto-buds-appimage`**: Envoltorio AppImage integrado al sistema.
+- **`moto-buds-git`**: Compilacion continua desde el codigo fuente.
+
+```bash
+# Instalacion mediante un asistente de AUR (ej. yay o paru):
+yay -S moto-buds-bin
+```
+
+### Opcion C: Compilacion Manual desde el Codigo Fuente
+
+#### Requisitos
 - Linux x86_64 o AArch64 con kernel 5.15 o superior.
 - Pila Bluetooth BlueZ activa (`bluetoothd`).
 - Compilador de C++ con soporte C++20 (GCC 11+ o Clang 13+).
@@ -76,16 +102,14 @@ La comunicacion se realiza mediante sockets directos de capa de enlace POSIX Blu
 - Cadena de herramientas de Rust (Cargo) para compilar el motor CLI.
 - Fuente Google Material Symbols (incluida en el repositorio bajo `assets/`).
 
-## Compilacion e Instalacion
-
-### 1. Compilar e Instalar el Motor CLI (Rust)
+#### 1. Compilar e Instalar el Motor CLI (Rust)
 
 ```bash
 cargo build --release
 install -Dm755 target/release/moto-buds ~/.local/bin/moto-buds
 ```
 
-### 2. Compilar e Instalar la Aplicacion Grafica (Qt6 / QML)
+#### 2. Compilar e Instalar la Aplicacion Grafica (Qt6 / QML)
 
 ```bash
 cmake -B build -S . -DCMAKE_INSTALL_PREFIX=~/.local -G Ninja

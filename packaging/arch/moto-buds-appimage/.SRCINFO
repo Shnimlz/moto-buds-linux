@@ -1,0 +1,27 @@
+pkgbase = moto-buds-appimage
+	pkgdesc = Motorola Moto Buds companion desktop application (AppImage standalone bundle)
+	pkgver = 0.1.0
+	pkgrel = 1
+	url = https://github.com/Shnimlz/moto-buds-linux
+	arch = x86_64
+	license = MIT
+	depends = bluez
+	depends = hicolor-icon-theme
+	optdepends = fuse2: Required for running older AppImages
+	optdepends = fuse3: Modern FUSE support
+	provides = moto-buds
+	provides = moto-buds-gui
+	conflicts = moto-buds
+	conflicts = moto-buds-bin
+	conflicts = moto-buds-git
+	options = !strip
+	source = https://github.com/Shnimlz/moto-buds-linux/releases/download/v0.1.0/Moto_Buds-x86_64.AppImage
+	source = com.motorola.motobuds.desktop::https://github.com/Shnimlz/moto-buds-linux/raw/main/data/com.motorola.motobuds.desktop
+	source = icon.png::https://github.com/Shnimlz/moto-buds-linux/raw/main/assets/icon.png
+	source = LICENSE::https://github.com/Shnimlz/moto-buds-linux/raw/main/LICENSE
+	sha256sums = SKIP
+	sha256sums = SKIP
+	sha256sums = SKIP
+	sha256sums = SKIP
+
+pkgname = moto-buds-appimage

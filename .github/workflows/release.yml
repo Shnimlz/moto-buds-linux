@@ -1,0 +1,134 @@
+name: Build & Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      tag_name:
+        description: 'Release Tag Name (e.g. v0.1.0)'
+        required: false
+        default: 'v0.1.0'
+      draft:
+        description: 'Create Draft Release'
+        type: boolean
+        default: false
+      prerelease:
+        description: 'Create Prerelease'
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Build Packages & Release
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install System Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            cmake \
+            ninja-build \
+            gcc \
+            g++ \
+            qt6-base-dev \
+            qt6-declarative-dev \
+            qt6-declarative-dev-tools \
+            qml6-module-qtquick \
+            qml6-module-qtquick-controls \
+            qml6-module-qtquick-layouts \
+            qml6-module-qtquick-templates \
+            libgl1-mesa-dev \
+            libbluetooth-dev \
+            file \
+            curl \
+            wget \
+            tar
+
+      - name: Setup Rust Toolchain
+        run: |
+          rustup default stable
+          rustup update stable
+
+      - name: Build Rust CLI Engine
+        run: |
+          cargo build --release
+
+      - name: Build Qt6 / QML Desktop GUI
+        run: |
+          cmake -B build -S . -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr -G Ninja
+          ninja -C build
+
+      - name: Package Standalone Tarball (moto-buds-linux-x86_64.tar.gz)
+        run: |
+          mkdir -p dist/moto-buds-linux-x86_64
+          cp target/release/moto-buds dist/moto-buds-linux-x86_64/
+          cp build/gui/moto-buds-gui dist/moto-buds-linux-x86_64/
+          cp data/com.motorola.motobuds.desktop dist/moto-buds-linux-x86_64/
+          cp data/com.motorola.motobuds.metainfo.xml dist/moto-buds-linux-x86_64/
+          cp assets/icon.png dist/moto-buds-linux-x86_64/
+          cp LICENSE dist/moto-buds-linux-x86_64/
+          cp README.md dist/moto-buds-linux-x86_64/
+
+          cat << 'EOF' > dist/moto-buds-linux-x86_64/install.sh
+          #!/bin/sh
+          set -e
+          PREFIX="${PREFIX:-/usr/local}"
+          echo "Installing Moto Buds to $PREFIX..."
+          install -Dm755 moto-buds "$PREFIX/bin/moto-buds"
+          install -Dm755 moto-buds-gui "$PREFIX/bin/moto-buds-gui"
+          install -Dm644 com.motorola.motobuds.desktop "$PREFIX/share/applications/com.motorola.motobuds.desktop"
+          install -Dm644 com.motorola.motobuds.metainfo.xml "$PREFIX/share/metainfo/com.motorola.motobuds.metainfo.xml"
+          install -Dm644 icon.png "$PREFIX/share/icons/hicolor/512x512/apps/moto-buds.png"
+          install -Dm644 icon.png "$PREFIX/share/icons/hicolor/192x192/apps/moto-buds.png"
+          if command -v update-desktop-database >/dev/null 2>&1; then
+              update-desktop-database "$PREFIX/share/applications" 2>/dev/null || true
+          fi
+          echo "Moto Buds installed successfully."
+          EOF
+          chmod +x dist/moto-buds-linux-x86_64/install.sh
+
+          tar -czvf dist/moto-buds-linux-x86_64.tar.gz -C dist moto-buds-linux-x86_64
+
+      - name: Build AppImage (Moto_Buds-x86_64.AppImage)
+        run: |
+          export APPIMAGE_EXTRACT_AND_RUN=1
+          bash scripts/build-appimage.sh dist
+
+      - name: Generate Checksums
+        run: |
+          cd dist
+          sha256sum Moto_Buds-x86_64.AppImage moto-buds-linux-x86_64.tar.gz > SHA256SUMS.txt
+          cat SHA256SUMS.txt
+
+      - name: Determine Tag Name
+        id: tag
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            TAG="${{ github.event.inputs.tag_name }}"
+          else
+            TAG="${{ github.ref_name }}"
+          fi
+          echo "tag_name=$TAG" >> $GITHUB_OUTPUT
+
+      - name: Publish GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.tag.outputs.tag_name }}
+          draft: ${{ github.event.inputs.draft || false }}
+          prerelease: ${{ github.event.inputs.prerelease || false }}
+          files: |
+            dist/Moto_Buds-x86_64.AppImage
+            dist/moto-buds-linux-x86_64.tar.gz
+            dist/SHA256SUMS.txt
+          generate_release_notes: true
