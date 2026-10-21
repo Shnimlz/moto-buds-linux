@@ -348,10 +348,13 @@ ApplicationWindow {
 
                         RowLayout {
                             width: parent.width
+                            spacing: 12
+
                             Text {
                                 text: "Versión de Protocolo"
                                 color: "#858d9c"
                                 font.pixelSize: 12
+                                Layout.preferredWidth: implicitWidth
                             }
                             Item { Layout.fillWidth: true }
                             Text {
@@ -364,10 +367,13 @@ ApplicationWindow {
 
                         RowLayout {
                             width: parent.width
+                            spacing: 12
+
                             Text {
                                 text: "Canal Bluetooth"
                                 color: "#858d9c"
                                 font.pixelSize: 12
+                                Layout.preferredWidth: implicitWidth
                             }
                             Item { Layout.fillWidth: true }
                             Text {
@@ -380,17 +386,35 @@ ApplicationWindow {
 
                         RowLayout {
                             width: parent.width
+                            spacing: 12
+
                             Text {
                                 text: "Identificador de Hardware"
                                 color: "#858d9c"
                                 font.pixelSize: 12
+                                Layout.preferredWidth: implicitWidth
+                                Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
                             }
-                            Item { Layout.fillWidth: true }
+
                             Text {
                                 text: backend.hardwareInfo
                                 color: "#ffffff"
                                 font.pixelSize: 12
                                 font.weight: Font.Bold
+                                elide: Text.ElideRight
+                                horizontalAlignment: Text.AlignRight
+                                Layout.fillWidth: true
+                                Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
+
+                                ToolTip.visible: hwMouseArea.containsMouse && truncated
+                                ToolTip.text: backend.hardwareInfo
+                                ToolTip.delay: 300
+
+                                MouseArea {
+                                    id: hwMouseArea
+                                    anchors.fill: parent
+                                    hoverEnabled: true
+                                }
                             }
                         }
                     }
