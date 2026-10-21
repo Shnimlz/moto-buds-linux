@@ -1,67 +1,113 @@
 import QtQuick
 import QtQuick.Controls.Basic
 
-Rectangle {
+Item {
     id: root
 
     property string currentMode: "Off"
     signal modeSelected(string mode)
 
-    color: "#181a1f"
-    radius: 12
-    border.color: "#282c34"
-    border.width: 1
-    implicitHeight: 72
+    implicitHeight: gridLayout.implicitHeight
     implicitWidth: 400
 
-    Row {
-        anchors.fill: parent
-        anchors.margins: 4
-        spacing: 4
+    Grid {
+        id: gridLayout
+        width: parent.width
+        columns: parent.width >= 500 ? 2 : 1
+        spacing: 10
 
         Repeater {
             model: [
-                { id: "Off", label: "Desactivado", icon: "volume_off" },
-                { id: "NoiseCancellation", label: "Cancelación", icon: "noise_aware" },
-                { id: "Adaptive", label: "Adaptativo", icon: "tune" },
-                { id: "Transparency", label: "Transparente", icon: "hearing" }
+                {
+                    id: "Off",
+                    label: "Desactivado",
+                    desc: "Audio directo sin filtros de ruido",
+                    icon: "volume_off"
+                },
+                {
+                    id: "NoiseCancellation",
+                    label: "Cancelación de Ruido",
+                    desc: "Bloqueo activo del ruido ambiental",
+                    icon: "noise_aware"
+                },
+                {
+                    id: "Adaptive",
+                    label: "Modo Adaptativo",
+                    desc: "Ajuste dinámico según el entorno",
+                    icon: "tune"
+                },
+                {
+                    id: "Transparency",
+                    label: "Transparencia",
+                    desc: "Paso de voz y sonidos exteriores",
+                    icon: "hearing"
+                }
             ]
 
             delegate: Rectangle {
-                id: segBtn
-                width: (parent.width - (3 * 4)) / 4
-                height: parent.height
-                radius: 8
+                id: cardBtn
+                width: gridLayout.columns === 2 ? (gridLayout.width - gridLayout.spacing) / 2 : gridLayout.width
+                height: 68
+                radius: 10
 
                 property bool isSelected: root.currentMode === modelData.id
-                color: isSelected ? "#0082c8" : (mouseArea.containsMouse ? "#232730" : "transparent")
+                color: isSelected ? "#0f3248" : (ancMouse.containsMouse ? "#20252f" : "#171a22")
+                border.color: isSelected ? "#0082c8" : (ancMouse.containsMouse ? "#323a49" : "#252a36")
+                border.width: isSelected ? 1.5 : 1
 
                 Behavior on color {
                     ColorAnimation { duration: 150 }
                 }
+                Behavior on border.color {
+                    ColorAnimation { duration: 150 }
+                }
 
-                Column {
-                    anchors.centerIn: parent
-                    spacing: 4
+                Row {
+                    anchors.fill: parent
+                    anchors.margins: 12
+                    spacing: 12
 
-                    MaterialIcon {
-                        name: modelData.icon
-                        size: 20
-                        iconColor: segBtn.isSelected ? "#ffffff" : "#a0a6b5"
-                        anchors.horizontalCenter: parent.horizontalCenter
+                    Rectangle {
+                        width: 42
+                        height: 42
+                        radius: 8
+                        color: cardBtn.isSelected ? "#0082c8" : "#222733"
+                        anchors.verticalCenter: parent.verticalCenter
+
+                        MaterialIcon {
+                            name: modelData.icon
+                            size: 22
+                            iconColor: cardBtn.isSelected ? "#ffffff" : "#a2a9b8"
+                            anchors.centerIn: parent
+                        }
                     }
 
-                    Text {
-                        text: modelData.label
-                        color: segBtn.isSelected ? "#ffffff" : "#8c93a0"
-                        font.pixelSize: 10
-                        font.weight: segBtn.isSelected ? Font.Bold : Font.Normal
-                        anchors.horizontalCenter: parent.horizontalCenter
+                    Column {
+                        anchors.verticalCenter: parent.verticalCenter
+                        spacing: 3
+                        width: parent.width - 54
+
+                        Text {
+                            text: modelData.label
+                            color: cardBtn.isSelected ? "#ffffff" : "#eceff4"
+                            font.pixelSize: 13
+                            font.weight: cardBtn.isSelected ? Font.Bold : Font.DemiBold
+                            elide: Text.ElideRight
+                            width: parent.width
+                        }
+
+                        Text {
+                            text: modelData.desc
+                            color: cardBtn.isSelected ? "#8bcbf5" : "#7b8392"
+                            font.pixelSize: 11
+                            elide: Text.ElideRight
+                            width: parent.width
+                        }
                     }
                 }
 
                 MouseArea {
-                    id: mouseArea
+                    id: ancMouse
                     anchors.fill: parent
                     hoverEnabled: true
                     cursorShape: Qt.PointingHandCursor

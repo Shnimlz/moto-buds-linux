@@ -12,26 +12,26 @@ Item {
     signal toggled(bool active)
 
     implicitWidth: 400
-    implicitHeight: 56
+    implicitHeight: 58
 
     Row {
         anchors.left: parent.left
         anchors.right: toggleSwitch.visible ? toggleSwitch.left : parent.right
-        anchors.rightMargin: 12
+        anchors.rightMargin: 16
         anchors.verticalCenter: parent.verticalCenter
-        spacing: 12
+        spacing: 14
 
         Rectangle {
-            width: 38
-            height: 38
+            width: 42
+            height: 42
             radius: 8
-            color: "#232731"
+            color: "#1c212c"
             anchors.verticalCenter: parent.verticalCenter
 
             MaterialIcon {
                 name: root.iconName
-                size: 20
-                iconColor: "#dcdfe4"
+                size: 22
+                iconColor: "#d2d6df"
                 anchors.centerIn: parent
             }
         }
@@ -39,7 +39,7 @@ Item {
         Column {
             anchors.verticalCenter: parent.verticalCenter
             spacing: 2
-            width: parent.width - 50
+            width: parent.width - 56
 
             Text {
                 text: root.title
@@ -69,11 +69,11 @@ Item {
         onToggled: root.toggled(checked)
 
         indicator: Rectangle {
-            implicitWidth: 42
+            implicitWidth: 44
             implicitHeight: 24
             radius: 12
-            color: toggleSwitch.checked ? "#0082c8" : "#2a2f3a"
-            border.color: toggleSwitch.checked ? "#0095e6" : "#3d4452"
+            color: toggleSwitch.checked ? "#0082c8" : "#242833"
+            border.color: toggleSwitch.checked ? "#0098ea" : "#343b4b"
             border.width: 1
 
             Rectangle {

@@ -9,24 +9,24 @@ Rectangle {
     property bool isCharging: false
     property bool connected: false
 
-    color: "#1e222b"
+    color: "#161921"
     radius: 12
-    border.color: isCharging ? "#0082c8" : "#2d323c"
+    border.color: isCharging ? "#0082c8" : "#262b36"
     border.width: isCharging ? 1.5 : 1
 
-    implicitWidth: 120
-    implicitHeight: 140
+    implicitWidth: 110
+    implicitHeight: 145
 
     Column {
-        anchors.centerIn: parent
+        anchors.fill: parent
+        anchors.margins: 10
         spacing: 6
-        width: parent.width - 16
 
         Image {
             id: budImg
             source: root.imageSource
-            width: 48
-            height: 48
+            width: 44
+            height: 44
             fillMode: Image.PreserveAspectFit
             anchors.horizontalCenter: parent.horizontalCenter
             smooth: true
@@ -35,7 +35,7 @@ Rectangle {
 
         Text {
             text: root.title
-            color: "#8c93a0"
+            color: "#858d9c"
             font.pixelSize: 11
             font.weight: Font.DemiBold
             anchors.horizontalCenter: parent.horizontalCenter
@@ -47,8 +47,8 @@ Rectangle {
 
             Text {
                 text: root.percentage >= 0 ? root.percentage + "%" : "--%"
-                color: root.isCharging ? "#2ec27e" : (root.connected ? "#ffffff" : "#6c7280")
-                font.pixelSize: 17
+                color: root.isCharging ? "#2ec27e" : (root.connected ? "#ffffff" : "#636a78")
+                font.pixelSize: 16
                 font.weight: Font.Bold
             }
 
@@ -61,14 +61,31 @@ Rectangle {
             }
         }
 
+        // Mini battery bar
+        Rectangle {
+            width: parent.width - 12
+            height: 4
+            radius: 2
+            color: "#232834"
+            anchors.horizontalCenter: parent.horizontalCenter
+            visible: root.connected && root.percentage >= 0
+
+            Rectangle {
+                width: parent.width * Math.max(0, Math.min(100, root.percentage)) / 100
+                height: parent.height
+                radius: 2
+                color: root.isCharging ? "#2ec27e" : (root.percentage < 20 ? "#e01b24" : "#0082c8")
+            }
+        }
+
         Text {
             text: {
                 if (!root.connected || root.percentage < 0) return "Desconectado";
                 if (root.isCharging) return "Cargando";
                 return "En uso";
             }
-            color: root.isCharging ? "#2ec27e" : "#8c93a0"
-            font.pixelSize: 11
+            color: root.isCharging ? "#2ec27e" : "#727987"
+            font.pixelSize: 10
             anchors.horizontalCenter: parent.horizontalCenter
         }
     }
